@@ -7,36 +7,24 @@ CREATE DATABASE IF NOT EXISTS benna_tounsiya;
 USE benna_tounsiya;
 
 -- ========================================
--- TABLE: UTILISATEURS CLIENTS
+-- TABLE: UTILISATEURS (Clients et Administrateurs)
 -- ========================================
-CREATE TABLE clients (
+CREATE TABLE utilisateurs (
   id INT PRIMARY KEY AUTO_INCREMENT,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
-  phone VARCHAR(20) NOT NULL,
+  phone VARCHAR(20),
   password VARCHAR(255) NOT NULL,
+  role ENUM('client', 'staff', 'manager', 'admin') DEFAULT 'client',
   address VARCHAR(255),
   city VARCHAR(100),
   postal_code VARCHAR(10),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE
-);
-
--- ========================================
--- TABLE: ADMINISTRATEURS
--- ========================================
-CREATE TABLE admins (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  email VARCHAR(150) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  role ENUM('admin', 'manager', 'staff') DEFAULT 'staff',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE
+  is_active BOOLEAN DEFAULT TRUE,
+  INDEX idx_email (email),
+  INDEX idx_role (role)
 );
 
 -- ========================================
@@ -86,7 +74,7 @@ CREATE TABLE reservations (
   status ENUM('confirmed', 'pending', 'cancelled', 'completed') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (client_id) REFERENCES clients(id)
+  FOREIGN KEY (client_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
 
 -- ========================================
@@ -105,7 +93,7 @@ CREATE TABLE orders (
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (client_id) REFERENCES clients(id)
+  FOREIGN KEY (client_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );
 
 -- ========================================
@@ -150,7 +138,7 @@ CREATE TABLE reviews (
   comment TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   is_approved BOOLEAN DEFAULT FALSE,
-  FOREIGN KEY (client_id) REFERENCES clients(id),
+  FOREIGN KEY (client_id) REFERENCES utilisateurs(id) ON DELETE CASCADE,
   FOREIGN KEY (dish_id) REFERENCES dishes(id)
 );
 

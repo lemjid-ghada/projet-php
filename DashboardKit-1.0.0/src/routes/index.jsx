@@ -1,5 +1,10 @@
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import PlatsList from '../views/menu/PlatsList';
+import Categories from '../views/menu/Categories';
+import ContactsPage from '../views/contacts/ContactsPage';
+
+
 
 // project import
 import MainRoutes from './MainRoutes';
@@ -22,6 +27,18 @@ const router = createBrowserRouter(
         }
       ]
     },
+    {
+  path: '/plats',
+  element: <PlatsList />
+},
+{
+  path: '/categories',
+  element: <Categories />
+},
+{
+  path: '/contacts',
+  element: <ContactsPage />
+},
     MainRoutes
   ],
   { basename: import.meta.env.VITE_APP_BASE_NAME }

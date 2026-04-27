@@ -3,7 +3,7 @@ import { lazy } from 'react';
 import AdminLayout from 'layouts/AdminLayout';
 import GuestLayout from 'layouts/GuestLayout';
 
-const ContactsPage = lazy(() => import('../views/contacts/index'));
+const ContactsPage = lazy(() => import('../views/contacts/ContactsPage'));
 const AdminsPage = lazy(() => import('../views/admins/index'));
 const ClientsPage = lazy(() => import('../views/clients/index'));
 const ReservationsPage = lazy(() => import('../views/reservations/index'));

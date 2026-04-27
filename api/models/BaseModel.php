@@ -51,7 +51,7 @@ abstract class BaseModel {
     /**
      * Créer un enregistrement
      */
-    protected function create($data) {
+    public function create($data) {
         $keys = array_keys($data);
         $values = array_values($data);
         $placeholders = array_fill(0, count($keys), '?');

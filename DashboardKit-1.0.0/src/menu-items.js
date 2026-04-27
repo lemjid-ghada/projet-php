@@ -18,6 +18,30 @@ const menuItems = {
       ]
     },
     {
+      id: 'menu-management',
+      title: '🍽️ GESTION DU MENU',
+      type: 'group',
+      icon: 'icon-restaurant-menu',
+      children: [
+        {
+          id: 'plats',
+          title: 'Liste des plats',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'restaurant_menu',
+          url: '/plats'
+        },
+        {
+          id: 'categories',
+          title: 'Catégories',
+          type: 'item',
+          icon: 'material-icons-two-tone',
+          iconname: 'category',
+          url: '/categories'
+        }
+      ]
+    },
+    {
       id: 'restaurant',
       title: 'GESTION RESTAURANT',
       type: 'group',
@@ -49,10 +73,10 @@ const menuItems = {
         },
         {
           id: 'contacts',
-          title: 'Contacts Partenaires',
+          title: 'Messages',
           type: 'item',
           icon: 'material-icons-two-tone',
-          iconname: 'contacts',
+          iconname: 'mail',
           url: '/contacts'
         },
         {
@@ -67,6 +91,5 @@ const menuItems = {
     }
   ]
 };
-
 
 export default menuItems;

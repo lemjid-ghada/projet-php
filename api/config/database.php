@@ -4,6 +4,20 @@
  * Benna Tounsiya - Restaurant API
  */
 
+// ========== EN-TÊTES CORS ==========
+header("Content-Type: application/json; charset=utf-8");
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+// Gérer la requête OPTIONS (preflight)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+// ===================================
+
 // Configuration MySQL
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -49,8 +63,19 @@ class Database {
             $this->connection->set_charset(DB_CHARSET);
             
         } catch (Exception $e) {
-            die('Erreur Database: ' . $e->getMessage());
+            $this->sendJsonError($e->getMessage());
         }
+    }
+
+    /**
+     * Envoyer une erreur en JSON
+     */
+    private function sendJsonError($message) {
+        echo json_encode([
+            "success" => false, 
+            "message" => $message
+        ]);
+        exit();
     }
 
     /**
@@ -89,10 +114,38 @@ class Database {
     }
 
     /**
-     * Échapper une chaîne
+     * Échapper une chaîne pour éviter les injections SQL
      */
     public function escape($string) {
         return $this->connection->real_escape_string($string);
+    }
+
+    /**
+     * Démarrer une transaction
+     */
+    public function beginTransaction() {
+        return $this->connection->begin_transaction();
+    }
+
+    /**
+     * Valider une transaction
+     */
+    public function commit() {
+        return $this->connection->commit();
+    }
+
+    /**
+     * Annuler une transaction
+     */
+    public function rollback() {
+        return $this->connection->rollback();
+    }
+
+    /**
+     * Obtenir l'erreur
+     */
+    public function error() {
+        return $this->connection->error;
     }
 
     /**
